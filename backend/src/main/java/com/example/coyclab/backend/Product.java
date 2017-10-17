@@ -13,19 +13,15 @@ public class Product {
     private String name;
     private Double price;
     private int discount;
-    private Date fromDate;
-    private Date toDate;
 
     public Product() {
     }
 
-    public Product(Long id, String name, Double price, int discount, Date fromDate, Date toDate) {
+    public Product(final Long id, final String name, final Double price, final int discount) {
         this.id = id;
         this.name = name;
         this.price = price;
         this.discount = discount;
-        this.fromDate = fromDate;
-        this.toDate = toDate;
     }
 
     public Long getId() {
@@ -42,13 +38,5 @@ public class Product {
 
     public int getDiscount() {
         return discount;
-    }
-
-    public Date getFromDate() {
-        return fromDate;
-    }
-
-    public Date getToDate() {
-        return toDate;
     }
 }

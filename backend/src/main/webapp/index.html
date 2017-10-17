@@ -55,11 +55,13 @@
                     API.</p>
                 <form>
                     <div class="input-group">
-                        <input type="text" class="form-control input-lg" placeholder="Name"
-                               id="nameInput"/>
+                        <input type="text" class="form-control input-lg" placeholder="Id" id="nameId"/>
+                        <input type="text" class="form-control input-lg" placeholder="Name" id="nameName"/>
+                        <input type="text" class="form-control input-lg" placeholder="Price" id="namePrice"/>
+                        <input type="text" class="form-control input-lg" placeholder="Discount" id="nameDiscount"/>
                         <span class="input-group-btn">
                              <button class="btn btn-default btn-primary btn-group btn-lg"
-                                     type="submit" id="helloButton">Say "Hello" &raquo;</button>
+                                     type="submit" id="Button">Say "Hello" &raquo;</button>
                           </span>
                     </div>
                 </form>
@@ -88,9 +90,13 @@
 <script type="text/javascript">
     // A function that attaches a "Say Hello" button click handler
     function enableClick() {
-      document.getElementById('helloButton').onclick = function() {
-        var name = document.getElementById('nameInput').value;
-        gapi.client.myApi.sayHi({'name': name}).execute(
+      document.getElementById('Button').onclick = function() {
+        var id = document.getElementById('nameId').value;
+        var name = document.getElementById('nameName').value;
+        var price = document.getElementById('namePrice').value;
+        var discount = document.getElementById('nameDiscount').value;
+
+        gapi.client.productApi.insert({'id': id, 'name': name, 'price': price, 'discount': discount }).execute(
           function(response) {
             var outputAlertDiv = document.getElementById('outputAlert');
             outputAlertDiv.style.visibility = 'visible';
@@ -110,7 +116,7 @@
     }
     // This is called initially
     function init() {
-      var apiName = 'myApi';
+      var apiName = 'productApi';
       var apiVersion = 'v1';
       var apiRoot = 'https://' + window.location.host + '/_ah/api';
       if (window.location.hostname == 'localhost'

@@ -58,9 +58,9 @@ public class ProductEndpoint {
             name = "get",
             path = "product/{id}",
             httpMethod = ApiMethod.HttpMethod.GET)
-    public Product get(@Named("id") Long id) throws NotFoundException {
+    public Product get(@Named("id") final Long id) throws NotFoundException {
         logger.info("Getting Product with ID: " + id);
-        Product product = ofy().load().type(Product.class).id(id).now();
+        final Product product = ofy().load().type(Product.class).id(id).now();
         if (product == null) {
             throw new NotFoundException("Could not find Product with ID: " + id);
         }
@@ -74,12 +74,16 @@ public class ProductEndpoint {
             name = "insert",
             path = "product",
             httpMethod = ApiMethod.HttpMethod.POST)
-    public Product insert(Product product) {
+    public Product insert(@Named("id") final String id,
+                          @Named("name") final String name,
+                          @Named("price") final Double price,
+                          @Named("discount") final int discount) {
         // Typically in a RESTful API a POST does not have a known ID (assuming the ID is used in the resource path).
         // You should validate that product.id has not been set. If the ID type is not supported by the
         // Objectify ID generator, e.g. long or String, then you should generate the unique ID yourself prior to saving.
         //
         // If your client provides the ID then you should probably use PUT instead.
+        final Product product = new Product(Long.valueOf(id), name, price, discount);
         ofy().save().entity(product).now();
         logger.info("Created Product with ID: " + product.getId());
 
@@ -99,7 +103,7 @@ public class ProductEndpoint {
             name = "update",
             path = "product/{id}",
             httpMethod = ApiMethod.HttpMethod.PUT)
-    public Product update(@Named("id") Long id, Product product) throws NotFoundException {
+    public Product update(@Named("id") final Long id, final Product product) throws NotFoundException {
         // TODO: You should validate your ID parameter against your resource's ID here.
         checkExists(id);
         ofy().save().entity(product).now();
@@ -118,7 +122,7 @@ public class ProductEndpoint {
             name = "remove",
             path = "product/{id}",
             httpMethod = ApiMethod.HttpMethod.DELETE)
-    public void remove(@Named("id") Long id) throws NotFoundException {
+    public void remove(@Named("id") final Long id) throws NotFoundException {
         checkExists(id);
         ofy().delete().type(Product.class).id(id).now();
         logger.info("Deleted Product with ID: " + id);
@@ -135,24 +139,24 @@ public class ProductEndpoint {
             name = "list",
             path = "product",
             httpMethod = ApiMethod.HttpMethod.GET)
-    public CollectionResponse<Product> list(@Nullable @Named("cursor") String cursor, @Nullable @Named("limit") Integer limit) {
+    public CollectionResponse<Product> list(@Nullable @Named("cursor") final String cursor, @Nullable @Named("limit") Integer limit) {
         limit = limit == null ? DEFAULT_LIST_LIMIT : limit;
         Query<Product> query = ofy().load().type(Product.class).limit(limit);
         if (cursor != null) {
             query = query.startAt(Cursor.fromWebSafeString(cursor));
         }
-        QueryResultIterator<Product> queryIterator = query.iterator();
-        List<Product> productList = new ArrayList<Product>(limit);
+        final QueryResultIterator<Product> queryIterator = query.iterator();
+        final List<Product> productList = new ArrayList<Product>(limit);
         while (queryIterator.hasNext()) {
             productList.add(queryIterator.next());
         }
         return CollectionResponse.<Product>builder().setItems(productList).setNextPageToken(queryIterator.getCursor().toWebSafeString()).build();
     }
 
-    private void checkExists(Long id) throws NotFoundException {
+    private void checkExists(final Long id) throws NotFoundException {
         try {
             ofy().load().type(Product.class).id(id).safe();
-        } catch (com.googlecode.objectify.NotFoundException e) {
+        } catch (final com.googlecode.objectify.NotFoundException e) {
             throw new NotFoundException("Could not find Product with ID: " + id);
         }
     }
