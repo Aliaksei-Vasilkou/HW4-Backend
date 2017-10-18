@@ -33,8 +33,9 @@ public class MainActivity extends AppCompatActivity {
                 String name = mNameEditText.getText().toString();
                 Double price = Double.valueOf(mPriceEditText.getText().toString());
                 int discount = Integer.valueOf(mDiscountEditText.getText().toString());
-
-//                new SenderAsyncTask().execute(new Pair<Context, String>(this, Product.class));
+                Product productObject = new Product();
+                productObject.setName(name).setId(id).setDiscount(discount).setPrice(price);
+                new SenderAsyncTask().execute(new Pair<Context, Product>(MainActivity.this,productObject));
             }
         });
     }

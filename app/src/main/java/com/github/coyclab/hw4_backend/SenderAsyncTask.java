@@ -15,20 +15,18 @@ import com.google.api.client.googleapis.services.GoogleClientRequestInitializer;
 import java.io.IOException;
 import java.util.List;
 
-public class SenderAsyncTask extends AsyncTask<Pair<Context, String>, Void, String> {
+public class SenderAsyncTask extends AsyncTask<Pair<Context, Product>, Void, String> {
 
     private static final String NO_DATA = "No data available";
     private static ProductApi myApiService = null;
     private Context context;
+    private Product productObject;
 
     @Override
-    protected String doInBackground(Pair<Context, String>... params) {
+    protected String doInBackground(Pair<Context, Product>... params) {
         if(myApiService == null) {  // Only do this once
             ProductApi.Builder builder = new ProductApi.Builder(AndroidHttp.newCompatibleTransport(),
                     new AndroidJsonFactory(), null)
-                    // options for running against local devappserver
-                    // - 10.0.2.2 is localhost's IP address in Android emulator
-                    // - turn off compression when running against local devappserver
                     .setRootUrl("http://10.0.2.2:8080/_ah/api/")
                     .setGoogleClientRequestInitializer(new GoogleClientRequestInitializer() {
                         @Override
@@ -36,18 +34,16 @@ public class SenderAsyncTask extends AsyncTask<Pair<Context, String>, Void, Stri
                             abstractGoogleClientRequest.setDisableGZipContent(true);
                         }
                     });
-            // end options for devappserver
-
             myApiService = builder.build();
         }
-
         context = params[0].first;
+        productObject = params[0].second;
         try {
             List<Product> products = myApiService.list().execute().getItems();
+            myApiService.insert(productObject.getDiscount(), productObject.getId(), productObject.getName(), productObject.getPrice()).execute();
             if (products == null || products.isEmpty()){
                 return NO_DATA;
             }
-
             return products.get(products.size()-1).toString();
         } catch (IOException e) {
             return e.getMessage();
@@ -56,6 +52,6 @@ public class SenderAsyncTask extends AsyncTask<Pair<Context, String>, Void, Stri
 
     @Override
     protected void onPostExecute(final String result) {
-        Toast.makeText(context, result, Toast.LENGTH_LONG).show();
+        Toast.makeText(context, result + "\nADDED", Toast.LENGTH_LONG).show();
     }
 }

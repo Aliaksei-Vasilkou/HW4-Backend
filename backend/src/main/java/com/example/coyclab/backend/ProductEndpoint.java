@@ -74,7 +74,7 @@ public class ProductEndpoint {
             name = "insert",
             path = "product",
             httpMethod = ApiMethod.HttpMethod.POST)
-    public Product insert(@Named("id") final String id,
+    public Product insert(@Named("id") final Long id,
                           @Named("name") final String name,
                           @Named("price") final Double price,
                           @Named("discount") final int discount) {
