@@ -86,7 +86,6 @@ public class ProductEndpoint {
         final Product product = new Product(Long.valueOf(id), name, price, discount);
         ofy().save().entity(product).now();
         logger.info("Created Product with ID: " + product.getId());
-
         return ofy().load().entity(product).now();
     }
 

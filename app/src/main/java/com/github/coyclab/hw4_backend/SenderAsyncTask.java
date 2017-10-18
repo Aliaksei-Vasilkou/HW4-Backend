@@ -18,6 +18,8 @@ import java.util.List;
 public class SenderAsyncTask extends AsyncTask<Pair<Context, Product>, Void, String> {
 
     private static final String NO_DATA = "No data available";
+    public static final String URL_LOCAL = "http://10.0.2.2:8080/_ah/api/";
+    public static final String URL_REMOTE = "https://my-test-project-33133.appspot.com//_ah/api/";
     private static ProductApi myApiService = null;
     private Context context;
     private Product productObject;
@@ -27,7 +29,7 @@ public class SenderAsyncTask extends AsyncTask<Pair<Context, Product>, Void, Str
         if(myApiService == null) {  // Only do this once
             ProductApi.Builder builder = new ProductApi.Builder(AndroidHttp.newCompatibleTransport(),
                     new AndroidJsonFactory(), null)
-                    .setRootUrl("http://10.0.2.2:8080/_ah/api/")
+                    .setRootUrl(URL_REMOTE)
                     .setGoogleClientRequestInitializer(new GoogleClientRequestInitializer() {
                         @Override
                         public void initialize(AbstractGoogleClientRequest<?> abstractGoogleClientRequest) throws IOException {
@@ -39,8 +41,8 @@ public class SenderAsyncTask extends AsyncTask<Pair<Context, Product>, Void, Str
         context = params[0].first;
         productObject = params[0].second;
         try {
-            List<Product> products = myApiService.list().execute().getItems();
             myApiService.insert(productObject.getDiscount(), productObject.getId(), productObject.getName(), productObject.getPrice()).execute();
+            List<Product> products = myApiService.list().execute().getItems();
             if (products == null || products.isEmpty()){
                 return NO_DATA;
             }

@@ -19,6 +19,8 @@ import java.util.List;
 class EndpointsAsyncTask extends AsyncTask<Pair<Context, String>, Void, String> {
 
     private static final String NO_DATA = "No data available";
+    public static final String URL_LOCAL = "http://10.0.2.2:8080/_ah/api/";
+    public static final String URL_REMOTE = "https://my-test-project-33133.appspot.com//_ah/api/";
     private static ProductApi myApiService = null;
     private Context context;
 
@@ -30,7 +32,7 @@ class EndpointsAsyncTask extends AsyncTask<Pair<Context, String>, Void, String> 
                     // options for running against local devappserver
                     // - 10.0.2.2 is localhost's IP address in Android emulator
                     // - turn off compression when running against local devappserver
-                    .setRootUrl("http://10.0.2.2:8080/_ah/api/")
+                    .setRootUrl(URL_REMOTE)
                     .setGoogleClientRequestInitializer(new GoogleClientRequestInitializer() {
                         @Override
                         public void initialize(AbstractGoogleClientRequest<?> abstractGoogleClientRequest) throws IOException {
