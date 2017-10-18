@@ -11,6 +11,7 @@ import android.widget.EditText;
 import com.example.coyclab.backend.productApi.model.Product;
 
 public class MainActivity extends AppCompatActivity {
+
     private Button mSendButton;
     private EditText mIdEditText;
     private EditText mNameEditText;
@@ -27,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
         new EndpointsAsyncTask().execute(new Pair<Context, String>(this, "Manfred"));
 
         mSendButton.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
                 Long id = Long.valueOf(mIdEditText.getText().toString());
@@ -35,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
                 int discount = Integer.valueOf(mDiscountEditText.getText().toString());
                 Product productObject = new Product();
                 productObject.setName(name).setId(id).setDiscount(discount).setPrice(price);
-                new SenderAsyncTask().execute(new Pair<Context, Product>(MainActivity.this,productObject));
+                new SenderAsyncTask().execute(new Pair<Context, Product>(MainActivity.this, productObject));
             }
         });
     }

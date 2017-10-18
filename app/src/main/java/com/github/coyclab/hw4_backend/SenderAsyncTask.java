@@ -26,11 +26,12 @@ public class SenderAsyncTask extends AsyncTask<Pair<Context, Product>, Void, Str
 
     @Override
     protected String doInBackground(Pair<Context, Product>... params) {
-        if(myApiService == null) {  // Only do this once
+        if (myApiService == null) {  // Only do this once
             ProductApi.Builder builder = new ProductApi.Builder(AndroidHttp.newCompatibleTransport(),
                     new AndroidJsonFactory(), null)
                     .setRootUrl(URL_REMOTE)
                     .setGoogleClientRequestInitializer(new GoogleClientRequestInitializer() {
+
                         @Override
                         public void initialize(AbstractGoogleClientRequest<?> abstractGoogleClientRequest) throws IOException {
                             abstractGoogleClientRequest.setDisableGZipContent(true);
@@ -43,10 +44,10 @@ public class SenderAsyncTask extends AsyncTask<Pair<Context, Product>, Void, Str
         try {
             myApiService.insert(productObject.getDiscount(), productObject.getId(), productObject.getName(), productObject.getPrice()).execute();
             List<Product> products = myApiService.list().execute().getItems();
-            if (products == null || products.isEmpty()){
+            if (products == null || products.isEmpty()) {
                 return NO_DATA;
             }
-            return products.get(products.size()-1).toString();
+            return products.get(products.size() - 1).toString();
         } catch (IOException e) {
             return e.getMessage();
         }

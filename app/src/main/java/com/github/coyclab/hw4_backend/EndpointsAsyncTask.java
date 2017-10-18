@@ -26,7 +26,7 @@ class EndpointsAsyncTask extends AsyncTask<Pair<Context, String>, Void, String> 
 
     @Override
     protected String doInBackground(Pair<Context, String>... params) {
-        if(myApiService == null) {  // Only do this once
+        if (myApiService == null) {  // Only do this once
             ProductApi.Builder builder = new ProductApi.Builder(AndroidHttp.newCompatibleTransport(),
                     new AndroidJsonFactory(), null)
                     // options for running against local devappserver
@@ -34,6 +34,7 @@ class EndpointsAsyncTask extends AsyncTask<Pair<Context, String>, Void, String> 
                     // - turn off compression when running against local devappserver
                     .setRootUrl(URL_REMOTE)
                     .setGoogleClientRequestInitializer(new GoogleClientRequestInitializer() {
+
                         @Override
                         public void initialize(AbstractGoogleClientRequest<?> abstractGoogleClientRequest) throws IOException {
                             abstractGoogleClientRequest.setDisableGZipContent(true);
@@ -47,11 +48,11 @@ class EndpointsAsyncTask extends AsyncTask<Pair<Context, String>, Void, String> 
         context = params[0].first;
         try {
             List<Product> products = myApiService.list().execute().getItems();
-            if (products == null || products.isEmpty()){
+            if (products == null || products.isEmpty()) {
                 return NO_DATA;
             }
 
-            return products.get(products.size()-1).toString();
+            return products.get(products.size() - 1).toString();
         } catch (IOException e) {
             return e.getMessage();
         }
