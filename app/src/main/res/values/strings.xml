@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">HW4-Backend</string>
+    <string name="id_edit_text_placeholder">Id</string>
+    <string name="name_edit_text_placeholder">Name</string>
+    <string name="price_edit_text_placeholder">Price</string>
+    <string name="discount_edit_text_placeholder">Discount</string>
+    <string name="send_button_name">Send Data</string>
 </resources>
