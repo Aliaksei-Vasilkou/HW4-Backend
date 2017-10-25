@@ -12,7 +12,11 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
+        debug {
+            buildConfigField "String", "VERSION_URL", "\"http://10.0.2.2:8080/\""
+        }
         release {
+            buildConfigField "String", "VERSION_URL", "\"https://somesitewithmyconfigurationversion.com\""
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
