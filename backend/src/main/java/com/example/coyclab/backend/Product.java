@@ -3,8 +3,6 @@ package com.example.coyclab.backend;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 
-import java.util.Date;
-
 @Entity
 public class Product {
 

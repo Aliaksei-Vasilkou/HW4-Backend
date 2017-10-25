@@ -1,6 +1,8 @@
 package com.github.coyclab.hw4_backend;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Pair;
@@ -22,6 +24,61 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        new Thread(new Runnable() {
+
+            @Override
+
+            public void run() {
+                final BackendConfigurator configurator = new BackendConfigurator();
+                if (!configurator.isActualVersion()) {
+                    if (configurator.isNeedForceUpdate()) {
+                        runOnUiThread(new Runnable() {
+
+                            @Override
+                            public void run() {
+                                final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                                        MainActivity.this);
+                                alertDialogBuilder
+                                        .setTitle("Update")
+                                        .setMessage("You should update your application here: " +
+                                                BuildConfig.VERSION_URL)
+                                        .setCancelable(false)
+                                        .create()
+                                        .show();
+                            }
+                        });
+                    } else {
+                        runOnUiThread(new Runnable() {
+
+                            @Override
+                            public void run() {
+                                final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                                        MainActivity.this);
+
+                                alertDialogBuilder
+                                        .setTitle("Update")
+                                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+
+                                            public void onClick(final DialogInterface dialog, final int id) {
+                                                MainActivity.this.finish();
+                                            }
+                                        })
+                                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+
+                                            public void onClick(final DialogInterface dialog, final int id) {
+                                                dialog.cancel();
+                                            }
+                                        })
+                                        .setCancelable(false)
+                                        .create()
+                                        .show();
+                            }
+                        });
+                    }
+                }
+            }
+        }).start();
 
         initView();
 

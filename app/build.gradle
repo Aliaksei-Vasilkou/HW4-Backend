@@ -11,11 +11,32 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+
     buildTypes {
+        debug {
+            buildConfigField "String", "VERSION_URL", "\"http://10.0.2.2:8080/\""
+        }
         release {
+            buildConfigField "String", "VERSION_URL", "\"https://somesitewithmyconfigurationversion.com\""
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+
+    flavorDimensions "store"
+
+    productFlavors {
+
+        GooglePlay {
+            flavorDimension "store"
+            buildConfigField "String", "SHARE_URL", "\"http://mybestcalcforgooglestore.com\""
+        }
+
+        Amazon {
+            flavorDimension "store"
+            buildConfigField "String", "SHARE_URL", "\"http://mybestcalcforamazon.com\""
+        }
+
     }
 }
 
@@ -35,4 +56,6 @@ dependencies {
     }
     testCompile 'junit:junit:4.12'
     compile project(path: ':backend', configuration: 'android-endpoints')
+    compile project(path: ':lib')
+    compile 'com.google.code.gson:gson:2.7'
 }
