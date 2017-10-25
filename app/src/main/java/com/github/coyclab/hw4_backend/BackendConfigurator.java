@@ -47,7 +47,7 @@ public class BackendConfigurator {
                         .setLenient()
                         .create()
                         .fromJson(inputStreamReader, Updater.class);
-            } catch (Exception pE){
+            } catch (final Exception pE){
                 pE.printStackTrace();
             } finally {
                 if (inputStreamReader != null) {

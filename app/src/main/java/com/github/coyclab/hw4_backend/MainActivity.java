@@ -14,7 +14,6 @@ import com.example.coyclab.backend.productApi.model.Product;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static final String TAG = "TAG";
     private Button mSendButton;
     private EditText mIdEditText;
     private EditText mNameEditText;
@@ -27,13 +26,15 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         new Thread(new Runnable() {
+
             @Override
 
             public void run() {
-                BackendConfigurator configurator = new BackendConfigurator();
-                if (!configurator.isActualVersion()){
-                    if (configurator.isNeedForceUpdate()){
+                final BackendConfigurator configurator = new BackendConfigurator();
+                if (!configurator.isActualVersion()) {
+                    if (configurator.isNeedForceUpdate()) {
                         runOnUiThread(new Runnable() {
+
                             @Override
                             public void run() {
                                 final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
@@ -49,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
                         });
                     } else {
                         runOnUiThread(new Runnable() {
+
                             @Override
                             public void run() {
                                 final AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
@@ -56,12 +58,14 @@ public class MainActivity extends AppCompatActivity {
 
                                 alertDialogBuilder
                                         .setTitle("Update")
-                                        .setPositiveButton("Yes",new DialogInterface.OnClickListener() {
+                                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+
                                             public void onClick(final DialogInterface dialog, final int id) {
                                                 MainActivity.this.finish();
                                             }
                                         })
-                                        .setNegativeButton("No",new DialogInterface.OnClickListener() {
+                                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+
                                             public void onClick(final DialogInterface dialog, final int id) {
                                                 dialog.cancel();
                                             }

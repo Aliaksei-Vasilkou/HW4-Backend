@@ -6,34 +6,37 @@
 
 package com.github.coyclab.backend;
 
-import java.io.IOException;
-
 import com.example.Updater;
 import com.google.gson.Gson;
 
-import javax.servlet.http.*;
+import java.io.IOException;
+
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 public class VersionServlet extends HttpServlet {
+
     @Override
-    public void doGet(HttpServletRequest req, HttpServletResponse resp)
+    public void doGet(final HttpServletRequest pRequest, final HttpServletResponse pResponse)
             throws IOException {
-        resp.setContentType("text/plain");
-        resp.getWriter().println("Please use the form to POST to this url");
+        pResponse.setContentType("text/plain");
+        pResponse.getWriter().println("Please use the form to POST to this url");
     }
 
     @Override
-    public void doPost(HttpServletRequest request, HttpServletResponse response)
+    public void doPost(final HttpServletRequest pRequest, final HttpServletResponse pResponse)
             throws IOException {
-        response.setContentType("application/json");
+        pResponse.setContentType("application/json");
 
-        Integer actualVersion = Integer.valueOf(request.getParameter("actual_version"));
-        Boolean isNeedForceUpdate = Boolean.valueOf(request.getParameter("is_need_force_update"));
+        final Integer actualVersion = Integer.valueOf(pRequest.getParameter("actual_version"));
+        final Boolean isNeedForceUpdate = Boolean.valueOf(pRequest.getParameter("is_need_force_update"));
 
-        Updater updater = new Updater();
+        final Updater updater = new Updater();
 
         updater.setActualVersion(actualVersion);
         updater.setNeedForceUpdate(isNeedForceUpdate);
 
-        new Gson().toJson(updater, response.getWriter());
+        new Gson().toJson(updater, pResponse.getWriter());
     }
 }

@@ -11,19 +11,19 @@ public class HttpClient implements IHttpClient {
     private InputStream urlConnectionInputStream;
 
     @Override
-    public void onRequest(String pUrl, IListener pListener) {
+    public void onRequest(final String pUrl, final IListener pListener) {
         try {
             urlConnection = (HttpURLConnection) new URL(pUrl).openConnection();
             urlConnectionInputStream = urlConnection.getInputStream();
             pListener.onResponse(urlConnectionInputStream);
-        } catch (IOException e) {
+        } catch (final IOException e) {
             e.printStackTrace();
         } finally {
             try {
-                if (urlConnectionInputStream != null){
+                if (urlConnectionInputStream != null) {
                     urlConnectionInputStream.close();
                 }
-            } catch (IOException e) {
+            } catch (final IOException e) {
                 e.printStackTrace();
             }
             urlConnection.disconnect();
