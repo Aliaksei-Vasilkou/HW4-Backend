@@ -8,6 +8,9 @@ package com.github.coyclab.backend;
 
 import java.io.IOException;
 
+import com.example.Updater;
+import com.google.gson.Gson;
+
 import javax.servlet.http.*;
 
 public class MyServlet extends HttpServlet {
@@ -19,13 +22,19 @@ public class MyServlet extends HttpServlet {
     }
 
     @Override
-    public void doPost(HttpServletRequest req, HttpServletResponse resp)
+    public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
-        String name = req.getParameter("name");
-        resp.setContentType("text/plain");
-        if (name == null) {
-            resp.getWriter().println("Please enter a name");
-        }
-        resp.getWriter().println("Hello " + name);
+
+        Integer actualVersion = Integer.valueOf(request.getParameter("actual_version"));
+        Boolean isNeedForceUpdate = Boolean.valueOf(request.getParameter("is_need_force_update"));
+
+        response.setContentType("application/json");
+
+        Updater updater = new Updater();
+
+        updater.setActualVersion(actualVersion);
+        updater.setNeedForceUpdate(isNeedForceUpdate);
+
+        new Gson().toJson(updater, response.getWriter());
     }
 }
