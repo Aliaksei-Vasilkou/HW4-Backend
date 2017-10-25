@@ -20,7 +20,9 @@ public class HttpClient implements IHttpClient {
             e.printStackTrace();
         } finally {
             try {
-                urlConnectionInputStream.close();
+                if (urlConnectionInputStream != null){
+                    urlConnectionInputStream.close();
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }

@@ -36,4 +36,5 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile project(path: ':backend', configuration: 'android-endpoints')
     compile project(path: ':lib')
+    compile 'com.google.code.gson:gson:2.7'
 }

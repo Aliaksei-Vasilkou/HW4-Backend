@@ -13,7 +13,7 @@ import com.google.gson.Gson;
 
 import javax.servlet.http.*;
 
-public class MyServlet extends HttpServlet {
+public class VersionServlet extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
@@ -24,11 +24,10 @@ public class MyServlet extends HttpServlet {
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
+        response.setContentType("application/json");
 
         Integer actualVersion = Integer.valueOf(request.getParameter("actual_version"));
         Boolean isNeedForceUpdate = Boolean.valueOf(request.getParameter("is_need_force_update"));
-
-        response.setContentType("application/json");
 
         Updater updater = new Updater();
 

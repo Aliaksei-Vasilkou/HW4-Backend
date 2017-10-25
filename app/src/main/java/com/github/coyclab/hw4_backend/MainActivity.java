@@ -1,8 +1,11 @@
 package com.github.coyclab.hw4_backend;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.util.Pair;
 import android.view.View;
 import android.widget.Button;
@@ -12,6 +15,7 @@ import com.example.coyclab.backend.productApi.model.Product;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static final String TAG = "TAG";
     private Button mSendButton;
     private EditText mIdEditText;
     private EditText mNameEditText;
@@ -22,6 +26,24 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                BackendConfigurator configurator = new BackendConfigurator();
+                if (!configurator.isActualVersion()){
+                    Log.d(TAG, "Not actualVersion");
+                    if (configurator.isNeedForceUpdate()){
+                        Log.d(TAG, "need force update");
+                    } else {
+                        Log.d(TAG, "dont need force update");
+                    }
+                } else{
+                    Log.d(TAG, "Actual version");
+                }
+
+            }
+        }).start();
 
         initView();
 
